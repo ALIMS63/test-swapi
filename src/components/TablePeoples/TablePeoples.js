@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
-import './App.css';
+import OnePeople from '../OnePeople/OnePeople';
+import { useHistory } from 'react-router-dom';
+
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -27,9 +29,10 @@ const useStyles = makeStyles({
   },
 });
 
-function App() {
+export default function TablePeoples() {
   const [data, setData] = useState([]);
   const classes = useStyles();
+  const history = useHistory();
 
   useEffect(() => {
     (async () => {
@@ -37,20 +40,23 @@ function App() {
       const json = await res.json();
       setData(json.results);
     })();
-  }, [data]);
+  }, []);
 
   console.log(data);
 
   function sortWeight() {
     console.log('sortWeight');
+    setData([...data.sort((a, b) => a.mass - b.mass)]);
   }
 
   function sortHeight() {
     console.log('sortHeight');
+    setData([...data.sort((a, b) => a.height - b.height)]);
   }
 
   function sortGender() {
     console.log('sortGender');
+    setData([...data.filter(obj => obj.gender === 'male'), ...data.filter(obj => obj.gender === 'female'), ...data.filter(obj => obj.gender !== 'male' && obj.gender !== 'female')]);
   }
 
   return (
@@ -62,21 +68,17 @@ function App() {
             <StyledTableCell onClick={sortWeight} align="right">Weight</StyledTableCell>
             <StyledTableCell onClick={sortHeight} align="right">Height</StyledTableCell>
             <StyledTableCell onClick={sortGender} align="right">Gender</StyledTableCell>
-            <StyledTableCell align="right">Birth year</StyledTableCell>
-            <StyledTableCell align="right">Eye color</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data && data.map((obj) => (
             <StyledTableRow key={obj.name}>
-              <StyledTableCell component="th" scope="row">
+              <StyledTableCell onClick={() => history.push(`/${obj.name}`)} component="th" scope="row">
                 {obj.name}
               </StyledTableCell>
               <StyledTableCell align="right">{obj.mass}</StyledTableCell>
               <StyledTableCell align="right">{obj.height}</StyledTableCell>
               <StyledTableCell align="right">{obj.gender}</StyledTableCell>
-              <StyledTableCell align="right">{obj.birth_year}</StyledTableCell>
-              <StyledTableCell align="right">{obj.eye_color}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -84,5 +86,3 @@ function App() {
     </TableContainer>
   );
 }
-
-export default App;
