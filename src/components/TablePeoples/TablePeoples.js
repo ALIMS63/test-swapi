@@ -27,6 +27,9 @@ const useStyles = makeStyles({
   table: {
     minWidth: 700,
   },
+  curs: {
+    cursor: 'pointer',
+  }
 });
 
 export default function TablePeoples() {
@@ -65,15 +68,15 @@ export default function TablePeoples() {
         <TableHead>
           <TableRow>
             <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell onClick={sortWeight} align="right">Weight</StyledTableCell>
-            <StyledTableCell onClick={sortHeight} align="right">Height</StyledTableCell>
-            <StyledTableCell onClick={sortGender} align="right">Gender</StyledTableCell>
+            <StyledTableCell class={classes.curs} onClick={sortWeight} align="right">Weight</StyledTableCell>
+            <StyledTableCell class={classes.curs} onClick={sortHeight} align="right">Height</StyledTableCell>
+            <StyledTableCell class={classes.curs} onClick={sortGender} align="right">Gender</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.map((obj) => (
+          {data && data.map((obj, ind) => (
             <StyledTableRow key={obj.name}>
-              <StyledTableCell onClick={() => history.push(`/${obj.name}`)} component="th" scope="row">
+              <StyledTableCell class={classes.curs} onClick={() => history.push(`/${ind}`)} component="th" scope="row">
                 {obj.name}
               </StyledTableCell>
               <StyledTableCell align="right">{obj.mass}</StyledTableCell>
